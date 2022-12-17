@@ -6,6 +6,7 @@ import com.example.PeregrinosFX.service.CarnetService;
 import com.example.PeregrinosFX.service.ParadaService;
 import com.example.PeregrinosFX.service.PeregrinoService;
 import com.example.PeregrinosFX.service.UserService;
+import com.example.PeregrinosFX.service.impl.UserServiceImpl;
 import com.example.PeregrinosFX.view.FxmlView;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class RegistroController implements Initializable {
 
     @Lazy
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Lazy
     @Autowired
@@ -88,22 +89,12 @@ public class RegistroController implements Initializable {
     @FXML
     private Button cancelarBTN;
 
-    public static User userCreado;
-
     public StageManager getStageManager() {
         return stageManager;
     }
 
     public void setStageManager(StageManager stageManager) {
         this.stageManager = stageManager;
-    }
-
-    public UserService getUserService() {
-        return userService;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
     public Label getNombreLBL() {
@@ -218,22 +209,17 @@ public class RegistroController implements Initializable {
         this.cancelarBTN = cancelarBTN;
     }
 
-    @FXML
-    private void updateAlert(User user) {
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Usuario registrado");
-        alert.setHeaderText(null);
-        alert.setContentText("El usuario " + getUsuarioTF() + " se ha registrado correctamente.");
-        alert.showAndWait();
-    }
-
+    public static User userCreado;
 
     @FXML
     private void registro(ActionEvent event) throws IOException {
-        if (userService.userDisponible(getUsuarioTF())) {
+
+        //Comprobamos la disponibilidad del usuario
+        if (userServiceImpl.userDisponible(getUsuarioTF())) {
             usuarioLBL.setText("NO DISPONIBLE");
             usuarioLBL.setTextFill(Paint.valueOf("#FF0000"));
+
+            //Comprobamos que se han introducido todos los campos
         } else if (confirmcontraTF.equals("") || contrasenaTF.equals("") || usuarioTF.equals("") || nombreTF.equals("") || paradaCB.getSelectionModel().getSelectedItem() == null || nacionalidadCB.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Campos no introducidos");
@@ -241,37 +227,23 @@ public class RegistroController implements Initializable {
             alert.setContentText("Introduzca todos los campos.");
             alert.showAndWait();
         }
-        else if (confirmcontraTF != contrasenaTF) {
+        //Comprobamos que las contraseñas coincidan
+        else if (!confirmcontraTF.getText().equals(contrasenaTF.getText())) {
             contrasenaLBL.setText("NO COINCIDEN");
             contrasenaLBL.setTextFill(Paint.valueOf("#FF0000"));
             confirmcontraLBL.setText("NO COINCIDEN");
             confirmcontraLBL.setTextFill(Paint.valueOf("#FF0000"));
-        }  else {
-            userCreado = new User();
-            Peregrino peregrino = new Peregrino();
-            Carnet carnet = new Carnet();
-            Parada parada = new Parada();
-            Perfil perfil = new Perfil();
-            Carnet carnetAux = new Carnet();
-            parada = (Parada) paradaCB.getSelectionModel().getSelectedItem();
-            carnetAux.getIdCarnet();
-            perfil.setIdPerfil(1L);
-            userCreado.setContrasenia(getContrasenaTF());
-            userCreado.setUsuario(getUsuarioTF());
-            userCreado.setPerfil(perfil);
-            carnet.setDistancia(0.0);
-            carnet.setFechaExp(LocalDate.now());
-            carnet.setNumVips(0);
-            carnet.setParadaInicial(parada);
-            Carnet newCarnet = carnetService.addCarnet(carnet);
-            newCarnet.getIdCarnet();
-            peregrino.setNombre(getNombreTF());
-            peregrino.setNacionalidad((String) nacionalidadCB.getValue());
-            peregrino.setCarnet(newCarnet);
-            userCreado.setPeregrino(peregrino);
-            Peregrino newPeregrino = peregrinoService.addPeregrino(peregrino);
-            User newUser = userService.addUser(userCreado);
-            updateAlert(userCreado);
+        }
+        //Una vez comprobamos, llamamos al metodo registro y mostramos un mensaje al usuario
+        else {
+
+            userCreado = userServiceImpl.registro((Parada) paradaCB.getSelectionModel().getSelectedItem(), getNombreTF(), getUsuarioTF(), getContrasenaTF(), (String) nacionalidadCB.getValue());
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Usuario registrado");
+            alert.setHeaderText(null);
+            alert.setContentText("El usuario " + getUsuarioTF() + " se ha registrado correctamente.");
+            alert.showAndWait();
             stageManager.switchScene(FxmlView.USUARIOCREADO);
 
         }

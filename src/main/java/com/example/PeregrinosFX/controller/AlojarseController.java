@@ -1,10 +1,13 @@
 package com.example.PeregrinosFX.controller;
 
+import com.example.PeregrinosFX.bean.Estancia;
 import com.example.PeregrinosFX.bean.Parada;
 import com.example.PeregrinosFX.bean.Peregrino;
 import com.example.PeregrinosFX.config.StageManager;
+import com.example.PeregrinosFX.service.CarnetService;
 import com.example.PeregrinosFX.service.ParadaService;
 import com.example.PeregrinosFX.service.PeregrinoService;
+import com.example.PeregrinosFX.service.impl.EstanciaServiceImpl;
 import com.example.PeregrinosFX.view.FxmlView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -26,17 +30,24 @@ import static com.example.PeregrinosFX.controller.LoginController.u;
 @Controller
 public class AlojarseController implements Initializable {
 
-    @Lazy
+@Lazy
     @Autowired
     private StageManager stageManager;
 
-    @Lazy
+
     @Autowired
     private ParadaService paradaService;
 
-    @Lazy
+    @Autowired
+    private CarnetService carnetService;
+
+
     @Autowired
     private PeregrinoService peregrinoService;
+
+
+    @Autowired
+    private EstanciaServiceImpl estanciaServiceImpl;
 
     @FXML
     private Label paradaLBL;
@@ -149,25 +160,66 @@ public class AlojarseController implements Initializable {
     }
 
     @FXML
-    private void estanciaClick(ActionEvent event) throws IOException{
-        if(estanciaCheck.isSelected()){
+    private void alojar(ActionEvent event) throws IOException {
+
+        Peregrino peregrino = (Peregrino) peregrinoCB.getSelectionModel().getSelectedItem();
+        Parada parada = (Parada) paradaCB.getSelectionModel().getSelectedItem();
+        estanciaServiceImpl.alojarse((Peregrino) peregrinoCB.getSelectionModel().getSelectedItem(), (Parada) paradaCB.getSelectionModel().getSelectedItem());
+        if (estanciaCheck.isSelected()) {
+
+            if (vipCB.isSelected()) {
+
+                peregrino.getCarnet().setNumVips(peregrino.getCarnet().getNumVips() + 1);
+                Estancia e = new Estancia();
+                e.setVip(true);
+                e.setFecha(LocalDate.now());
+                e.setParada(parada);
+                e.setPeregrino(peregrino);
+                estanciaServiceImpl.addEstancia(e);
+                carnetService.addCarnet(peregrino.getCarnet());
+            }
+            if (!vipCB.isSelected()) {
+                Estancia e = new Estancia();
+                e.setVip(false);
+                e.setFecha(LocalDate.now());
+                e.setParada(parada);
+                e.setPeregrino(peregrino);
+                estanciaServiceImpl.addEstancia(e);
+            }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Peregrino alojado");
+            alert.setHeaderText(null);
+            alert.setContentText("El peregrino " + ((Peregrino) peregrinoCB.getSelectionModel().getSelectedItem()).getNombre() + " ha realizado la parada correctamente.");
+            alert.showAndWait();
+            if (rol == 2) {
+                stageManager.switchScene(FxmlView.MENUADMINPARADA);
+            }
+            if (rol == 3) {
+                stageManager.switchScene(FxmlView.MENUADMINGENERAL);
+            }
+        }
+    }
+
+    @FXML
+    private void estanciaClick(ActionEvent event) throws IOException {
+        if (estanciaCheck.isSelected()) {
             vipLBL.setTextFill(Paint.valueOf("45322e"));
             vipCB.setDisable(false);
 
-        }
-        else{
+        } else {
             vipLBL.setTextFill(Paint.valueOf("45322e70"));
             vipCB.setDisable(true);
 
         }
 
     }
+
     @FXML
     private void cancelarAction(ActionEvent event) throws IOException {
-        if(rol == 2) {
+        if (rol == 2) {
             stageManager.switchScene(FxmlView.MENUADMINPARADA);
         }
-        if(rol == 3) {
+        if (rol == 3) {
             stageManager.switchScene(FxmlView.MENUADMINGENERAL);
         }
     }

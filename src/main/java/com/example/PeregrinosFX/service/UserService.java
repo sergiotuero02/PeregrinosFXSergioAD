@@ -6,7 +6,7 @@ import com.example.PeregrinosFX.generic.GenericService;
 
 public interface UserService extends GenericService <User> {
 
-    boolean autentico(String usuario, String contrasenia);
+    boolean login(String usuario, String contrasenia);
 
     User findByUsuario(String usuario);
 

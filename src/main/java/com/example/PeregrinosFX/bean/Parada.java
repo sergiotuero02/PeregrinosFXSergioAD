@@ -19,7 +19,7 @@ public class Parada {
 
     private char region;
 
-    @ManyToMany(mappedBy = "paradas")
+    @ManyToMany(mappedBy = "paradas", fetch = FetchType.EAGER)
     private List<Peregrino> peregrinos;
     public Parada() {
 

@@ -27,10 +27,10 @@ public class Peregrino {
     private Carnet carnet;
 
 
-    @OneToMany(mappedBy = "peregrino")
+    @OneToMany(mappedBy = "peregrino", fetch = FetchType.EAGER)
     private List<Estancia> estancias;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name ="paradas")
     private List<Parada> paradas;
     public Peregrino() {

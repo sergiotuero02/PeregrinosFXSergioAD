@@ -115,9 +115,12 @@ public class LoginController implements Initializable {
 
     @FXML
     private void login(ActionEvent event) throws IOException {
-        if (userService.autentico(getUsuarioTF(), getContrasenaTF())) {
+        //Llamamos al método login para comprobar si las credenciales intoducidas coinciden
+        if (userService.login(getUsuarioTF(), getContrasenaTF())) {
+            //Si coinciden, buscaremos el usuario correspondiente en la bd y se lo asignamos a la variable static u
             u = userService.findByUsuario(getUsuarioTF());
-            stageManager.switchScene(FxmlView.MENUADMINPARADA);
+
+            //En función del perfil del usuario mostramos un menú u otro
             Long idPerfil =u.getPerfil().getIdPerfil();
             if (idPerfil == 1) {
                 rol = Long.valueOf(1);
@@ -129,7 +132,9 @@ public class LoginController implements Initializable {
                 rol = Long.valueOf(3);
                 stageManager.switchScene(FxmlView.MENUADMINGENERAL);
             }
-        } else {
+        }
+        //Si las credenciales no coinciden se lo mostraremos al usuario
+        else {
             usuarioLBL.setText("LOGIN FAILED");
             usuarioLBL.setTextFill(Paint.valueOf("#FF0000"));
         }

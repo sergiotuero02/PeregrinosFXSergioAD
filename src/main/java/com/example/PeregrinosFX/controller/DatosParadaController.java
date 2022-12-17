@@ -6,6 +6,7 @@ import com.example.PeregrinosFX.config.StageManager;
 import com.example.PeregrinosFX.service.EstanciaService;
 import com.example.PeregrinosFX.service.ParadaService;
 import com.example.PeregrinosFX.service.impl.EstanciaServiceImpl;
+import com.example.PeregrinosFX.service.impl.ParadaServiceImpl;
 import com.example.PeregrinosFX.view.FxmlView;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -45,7 +46,7 @@ public class DatosParadaController implements Initializable {
 
     @Lazy
     @Autowired
-    private ParadaService paradaService;
+    private ParadaServiceImpl paradaServiceImpl;
 
     @FXML
     private TableView estanciasTABLE;
@@ -87,10 +88,39 @@ public class DatosParadaController implements Initializable {
     @FXML
     private ComboBox paradaCB;
 
+
+
     @FXML
     private void datosParada(ActionEvent event) throws IOException {
 
+        try {
 
+            LocalDate fechaInicial, fechaFinal;
+            fechaInicial = fechainicialDATE.getValue();
+            fechaFinal = fechafinalDATE.getValue();
+
+            idColmn.setCellValueFactory(new PropertyValueFactory<>("idEstancia"));
+            fechaColmn.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+            vipColmn.setCellValueFactory(new PropertyValueFactory<>("vip"));
+            peregrinoColmn.setCellValueFactory(new PropertyValueFactory<>("peregrino"));
+
+
+
+            ArrayList<Estancia> estanciasBD = (ArrayList<Estancia>) paradaServiceImpl.datosParada(fechaInicial, fechaFinal, (Parada) paradaCB.getSelectionModel().getSelectedItem());
+            for (Estancia e : estanciasBD) {
+                if (e.getFecha().equals(fechaFinal) || e.getFecha().equals(fechaFinal) || e.getFecha().isAfter(fechaInicial) && e.getFecha().isBefore(fechaFinal)) {
+                    estanciasTABLE.getItems().add(e);
+                }
+
+            }
+
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Parada no introducida");
+            alert.setHeaderText(null);
+            alert.setContentText("Introduzca la parada");
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -109,7 +139,7 @@ public class DatosParadaController implements Initializable {
             paradaCB.setValue(u.getParada().toString());
         } else {
             ArrayList<Parada> paradas = new ArrayList<>();
-            paradas = (ArrayList<Parada>) paradaService.findAll();
+            paradas = (ArrayList<Parada>) paradaServiceImpl.findAll();
             for (Parada p : paradas) {
                 paradaCB.getItems().add(p);
             }

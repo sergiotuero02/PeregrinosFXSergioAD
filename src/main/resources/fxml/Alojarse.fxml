@@ -31,7 +31,7 @@
                   <Font name="System Bold Italic" size="24.0" />
                </font>
             </Label>
-            <Button fx:id="aceptarBTN" layoutX="32.0" layoutY="325.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="178.0" style="-fx-background-color: #009000;" text="Alojarse" textFill="#fafafa">
+            <Button fx:id="aceptarBTN" onAction="#alojar" layoutX="32.0" layoutY="325.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="178.0" style="-fx-background-color: #009000;" text="Alojarse" textFill="#fafafa">
                <font>
                   <Font name="System Bold Italic" size="14.0" />
                </font></Button>

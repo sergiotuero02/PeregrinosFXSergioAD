@@ -13,8 +13,8 @@
                <font>
                   <Font name="System Bold Italic" size="18.0" />
                </font></Label>
-            <ComboBox layoutX="48.0" layoutY="91.0" prefHeight="25.0" prefWidth="504.0" style="-fx-background-color: D5B794;" />
-            <Button fx:id="expcarnetBTN" layoutX="50.0" layoutY="129.0" mnemonicParsing="false" onAction="#exportarCAction" prefHeight="37.0" prefWidth="226.0" style="-fx-background-color: #009000;" text="Exportar carnet" textFill="WHITE">
+            <ComboBox fx:id="peregrinosCB" layoutX="48.0" layoutY="91.0" prefHeight="25.0" prefWidth="504.0" style="-fx-background-color: D5B794;" />
+            <Button fx:id="expcarnetBTN" layoutX="50.0" layoutY="129.0" mnemonicParsing="false" onAction="#exportarCarnet" prefHeight="37.0" prefWidth="226.0" style="-fx-background-color: #009000;" text="Exportar carnet" textFill="WHITE">
                <font>
                   <Font name="System Bold Italic" size="17.0" />
                </font></Button>
