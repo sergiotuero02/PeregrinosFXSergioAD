@@ -81,7 +81,6 @@ public class DatosParadaController implements Initializable {
     @FXML
     private DatePicker fechafinalDATE;
 
-    //Muestra menú peregrino o menú admin general
     @FXML
     private Button inicioBTN;
 
@@ -89,7 +88,9 @@ public class DatosParadaController implements Initializable {
     private ComboBox paradaCB;
 
 
-
+    /*
+    *Método que añade todas las estancias para una parada concreta en un rango de fechas específico
+    **/
     @FXML
     private void datosParada(ActionEvent event) throws IOException {
 
@@ -104,8 +105,7 @@ public class DatosParadaController implements Initializable {
             vipColmn.setCellValueFactory(new PropertyValueFactory<>("vip"));
             peregrinoColmn.setCellValueFactory(new PropertyValueFactory<>("peregrino"));
 
-
-
+            //Llamamos al método datosParada que nos devuelve una colección de estancias, después las añadimos a la tabla aplicando el filtro de fechas
             ArrayList<Estancia> estanciasBD = (ArrayList<Estancia>) paradaServiceImpl.datosParada(fechaInicial, fechaFinal, (Parada) paradaCB.getSelectionModel().getSelectedItem());
             for (Estancia e : estanciasBD) {
                 if (e.getFecha().equals(fechaFinal) || e.getFecha().equals(fechaFinal) || e.getFecha().isAfter(fechaInicial) && e.getFecha().isBefore(fechaFinal)) {
@@ -114,11 +114,11 @@ public class DatosParadaController implements Initializable {
 
             }
 
-        } catch (NumberFormatException e) {
+        } catch (NullPointerException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Parada no introducida");
+            alert.setTitle("Introduzca todos los campos");
             alert.setHeaderText(null);
-            alert.setContentText("Introduzca la parada");
+            alert.setContentText("Introduzca todos los campos");
             alert.showAndWait();
         }
     }
@@ -135,8 +135,10 @@ public class DatosParadaController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //Cargamos los combo box, si el perfil/ rol es peregrino o parada solo cargaremos el valor correspondiente
+        //a ese peregrino o parada, pero si es un admin general los cargaremos todos
         if (rol == 2) {
-            paradaCB.setValue(u.getParada().toString());
+            paradaCB.setValue(u.getParada());
         } else {
             ArrayList<Parada> paradas = new ArrayList<>();
             paradas = (ArrayList<Parada>) paradaServiceImpl.findAll();

@@ -48,12 +48,22 @@ public class ExportarCarnetController implements Initializable {
 
     @FXML
     private void exportarCarnet(ActionEvent event) throws IOException {
-        carnetServiceImpl.exportarCarnet((Peregrino) peregrinosCB.getSelectionModel().getSelectedItem());
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Usuario registrado");
-        alert.setHeaderText(null);
-        alert.setContentText("Carnet del peregrino " + peregrinosCB.getSelectionModel().getSelectedItem() + " ha sido exportado.");
-        alert.showAndWait();
+        try {
+            //Llamamos al método exportar carnet e informamos al usuario del éxito de la operación
+            carnetServiceImpl.exportarCarnet((Peregrino) peregrinosCB.getSelectionModel().getSelectedItem());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Usuario registrado");
+            alert.setHeaderText(null);
+            alert.setContentText("Carnet del peregrino " + peregrinosCB.getSelectionModel().getSelectedItem() + " ha sido exportado.");
+            alert.showAndWait();
+
+        } catch (NullPointerException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Introduzca todos los campos");
+            alert.setHeaderText(null);
+            alert.setContentText("Introduzca todos los campos");
+            alert.showAndWait();
+        }
 
     }
 
@@ -75,6 +85,8 @@ public class ExportarCarnetController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //Cargamos los combo box, si el perfil/ rol es peregrino o parada solo cargaremos el valor correspondiente
+        //a ese peregrino o parada, pero si es un admin general los cargaremos todos
         if (rol == 1) {
             peregrinosCB.setValue(u.getPeregrino());
         } else {

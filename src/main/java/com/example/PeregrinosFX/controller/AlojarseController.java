@@ -30,7 +30,7 @@ import static com.example.PeregrinosFX.controller.LoginController.u;
 @Controller
 public class AlojarseController implements Initializable {
 
-@Lazy
+    @Lazy
     @Autowired
     private StageManager stageManager;
 
@@ -161,45 +161,65 @@ public class AlojarseController implements Initializable {
 
     @FXML
     private void alojar(ActionEvent event) throws IOException {
+        try {
 
-        Peregrino peregrino = (Peregrino) peregrinoCB.getSelectionModel().getSelectedItem();
-        Parada parada = (Parada) paradaCB.getSelectionModel().getSelectedItem();
-        estanciaServiceImpl.alojarse((Peregrino) peregrinoCB.getSelectionModel().getSelectedItem(), (Parada) paradaCB.getSelectionModel().getSelectedItem());
-        if (estanciaCheck.isSelected()) {
 
-            if (vipCB.isSelected()) {
+            Peregrino peregrino = (Peregrino) peregrinoCB.getSelectionModel().getSelectedItem();
+            Parada parada = (Parada) paradaCB.getSelectionModel().getSelectedItem();
+            //Llamamos al método alojarse que nos va añadir un campo a la tabla peregrino_parada con el peregrino y la parada seleccionados
+            //!Este método nos permite añadir varias veces la misma combinación peregrino parada! por lo que un peregrino puede realizar la misma parada varias veces
+            estanciaServiceImpl.alojarse((Peregrino) peregrinoCB.getSelectionModel().getSelectedItem(), (Parada) paradaCB.getSelectionModel().getSelectedItem());
 
-                peregrino.getCarnet().setNumVips(peregrino.getCarnet().getNumVips() + 1);
-                Estancia e = new Estancia();
-                e.setVip(true);
-                e.setFecha(LocalDate.now());
-                e.setParada(parada);
-                e.setPeregrino(peregrino);
-                estanciaServiceImpl.addEstancia(e);
-                carnetService.addCarnet(peregrino.getCarnet());
+            //Si hay una estancia la añadiremos, diferenciando si es vip o no
+            if (estanciaCheck.isSelected()) {
+
+                if (vipCB.isSelected()) {
+
+                    peregrino.getCarnet().setNumVips(peregrino.getCarnet().getNumVips() + 1);
+                    Estancia e = new Estancia();
+                    e.setVip(true);
+                    e.setFecha(LocalDate.now());
+                    e.setParada(parada);
+                    e.setPeregrino(peregrino);
+                    estanciaServiceImpl.addEstancia(e);
+                    //En ambos casos, actualizaremos el carnet para que se guarde la nueva distancia total y se actualice el número de vips
+                    carnetService.addCarnet(peregrino.getCarnet());
+                }
+                if (!vipCB.isSelected()) {
+                    Estancia e = new Estancia();
+                    e.setVip(false);
+                    e.setFecha(LocalDate.now());
+                    e.setParada(parada);
+                    e.setPeregrino(peregrino);
+                    estanciaServiceImpl.addEstancia(e);
+                    carnetService.addCarnet(peregrino.getCarnet());
+                }
+
+                //Mostramos un mensaje informando del éxito de la operación
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Peregrino alojado");
+                alert.setHeaderText(null);
+                alert.setContentText("El peregrino " + ((Peregrino) peregrinoCB.getSelectionModel().getSelectedItem()).getNombre() + " ha realizado la parada correctamente.");
+                alert.showAndWait();
+
+                //En función del perfil/rol redirigiremos al usuario hacia el menú correspondiente
+                if (rol == 2) {
+                    stageManager.switchScene(FxmlView.MENUADMINPARADA);
+                }
+                if (rol == 3) {
+                    stageManager.switchScene(FxmlView.MENUADMINGENERAL);
+                }
             }
-            if (!vipCB.isSelected()) {
-                Estancia e = new Estancia();
-                e.setVip(false);
-                e.setFecha(LocalDate.now());
-                e.setParada(parada);
-                e.setPeregrino(peregrino);
-                estanciaServiceImpl.addEstancia(e);
-            }
+        } catch (NullPointerException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Peregrino alojado");
+            alert.setTitle("Introduzca todos los campos");
             alert.setHeaderText(null);
-            alert.setContentText("El peregrino " + ((Peregrino) peregrinoCB.getSelectionModel().getSelectedItem()).getNombre() + " ha realizado la parada correctamente.");
+            alert.setContentText("Introduzca todos los campos");
             alert.showAndWait();
-            if (rol == 2) {
-                stageManager.switchScene(FxmlView.MENUADMINPARADA);
-            }
-            if (rol == 3) {
-                stageManager.switchScene(FxmlView.MENUADMINGENERAL);
-            }
         }
     }
 
+    //Método que activa o desactiva el campo vip en función de si hay estancia o no
     @FXML
     private void estanciaClick(ActionEvent event) throws IOException {
         if (estanciaCheck.isSelected()) {
@@ -226,21 +246,23 @@ public class AlojarseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //Cargamos los combo box, si el perfil/ rol es peregrino o parada solo cargaremos el valor correspondiente
+        //a ese peregrino o parada, pero si es un admin general los cargaremos todos
+        ArrayList<Peregrino> peregrinos = new ArrayList<>();
+        peregrinos = (ArrayList<Peregrino>) peregrinoService.findAll();
+        for (Peregrino p1 : peregrinos) {
+            peregrinoCB.getItems().add(p1);
+
+        }
         if (rol == 2) {
-            paradaCB.setValue(u.getParada().toString());
+            paradaCB.setValue(u.getParada());
         } else {
             ArrayList<Parada> paradas = new ArrayList<>();
             paradas = (ArrayList<Parada>) paradaService.findAll();
             for (Parada p : paradas) {
                 paradaCB.getItems().add(p);
             }
-            ArrayList<Peregrino> peregrinos = new ArrayList<>();
-            peregrinos = (ArrayList<Peregrino>) peregrinoService.findAll();
-            for (Peregrino p1 : peregrinos) {
-                peregrinoCB.getItems().add(p1);
-
-
-            }
         }
+
     }
 }
