@@ -26,7 +26,10 @@ public class EstanciaServiceImpl implements EstanciaService {
     @Autowired
     private PeregrinoService peregrinoService;
 
-
+    /*
+    * Finalmente este método solo añade un campo a la tabal peregrino/parada, no fui capaz de gestionar el alojamineto completo
+    * desde aquí por fallos que no pude arreglar, de forma que lo temriné desde el propio controlador, aunque no sea lo óptimo, funciona
+    **/
     public void alojarse(Peregrino peregrinoCB, Parada paradaCB) {
             List<Parada> paradasPeregrino = peregrinoCB.getParadas();
             paradasPeregrino.add(paradaCB);
