@@ -8,15 +8,19 @@
    <children>
       <Pane layoutX="100.0" layoutY="34.0" prefHeight="400.0" prefWidth="600.0" styleClass="pane" stylesheets="@../styles/AdminParada.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="informeparadaBTN" onAction="#abrirInformeParadas" layoutX="200.0" layoutY="116.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="199.0" style="-fx-background-color: #45322e;" text="Informe parada" textFill="#eed4b5">
+            <Button fx:id="informeparadaBTN" layoutX="200.0" layoutY="98.0" mnemonicParsing="false" onAction="#abrirInformeParadas" prefHeight="52.0" prefWidth="199.0" style="-fx-background-color: #45322e;" text="Informe parada" textFill="#eed4b5">
                <font>
                   <Font name="System Bold Italic" size="19.0" />
                </font></Button>
-            <Button fx:id="alojarseBTN" onAction="#abrirAlojarse" layoutX="200.0" layoutY="221.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="199.0" style="-fx-background-color: #45322e;" text="Alojarse" textFill="#eed4b5">
+            <Button fx:id="alojarseBTN" layoutX="200.0" layoutY="189.0" mnemonicParsing="false" onAction="#abrirAlojarse" prefHeight="52.0" prefWidth="199.0" style="-fx-background-color: #45322e;" text="Alojarse" textFill="#eed4b5">
                <font>
                   <Font name="System Bold Italic" size="19.0" />
                </font></Button>
-            <Button fx:id="cerrarsesionBTN" onAction="#cerrarSesion" layoutX="457.0" layoutY="339.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="121.0" style="-fx-background-color: #B22222;" text="Cerrar sesión" textFill="WHITE">
+            <Button fx:id="serviciosBTN" layoutX="200.0" layoutY="280.0" mnemonicParsing="false" onAction="#abrirServicios" prefHeight="52.0" prefWidth="199.0" style="-fx-background-color: #45322e;" text="Servicios" textFill="#eed4b5">
+               <font>
+                  <Font name="System Bold Italic" size="19.0" />
+               </font></Button>
+            <Button fx:id="cerrarsesionBTN" layoutX="457.0" layoutY="339.0" mnemonicParsing="false" onAction="#cerrarSesion" prefHeight="36.0" prefWidth="121.0" style="-fx-background-color: #B22222;" text="Cerrar sesión" textFill="WHITE">
                <font>
                   <Font name="System Bold Italic" size="16.0" />
                </font></Button>

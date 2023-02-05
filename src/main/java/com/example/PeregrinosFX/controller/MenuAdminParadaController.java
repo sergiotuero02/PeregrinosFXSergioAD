@@ -28,6 +28,9 @@ public class MenuAdminParadaController implements Initializable {
     private Button alojarseBTN;
 
     @FXML
+    private Button serviciosBTN;
+
+    @FXML
     private Button cerrarsesionBTN;
 
     @FXML
@@ -38,6 +41,11 @@ public class MenuAdminParadaController implements Initializable {
     @FXML
     private void abrirInformeParadas(ActionEvent event) throws IOException {
         stageManager.switchScene(FxmlView.DATOSPARADA);
+    }
+
+    @FXML
+    private void abrirServicios(ActionEvent event) throws IOException {
+        stageManager.switchScene(FxmlView.MENUSERVICIOS);
     }
 
     @FXML
