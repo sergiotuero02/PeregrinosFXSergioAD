@@ -2,6 +2,7 @@ package com.example.PeregrinosFX.controller;
 
 import com.example.PeregrinosFX.bean.Estancia;
 import com.example.PeregrinosFX.bean.Parada;
+import com.example.PeregrinosFX.bean.Servicio;
 import com.example.PeregrinosFX.config.StageManager;
 import com.example.PeregrinosFX.service.impl.ParadaServiceImpl;
 import com.example.PeregrinosFX.view.FxmlView;
@@ -118,6 +119,13 @@ public class NuevoServicioController implements Initializable {
 
 
         }
+    }
+
+    @FXML
+    private void nuevoServicio(ActionEvent event){
+        Servicio s = new Servicio();
+        s.setNombre(nombreTF.getText());
+        s.setPrecio(Double.parseDouble(precioTF.getText()));
     }
 
     @FXML

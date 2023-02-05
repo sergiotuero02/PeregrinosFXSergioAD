@@ -31,7 +31,7 @@
                     </font>
                 </TextField>
                 <Line endX="111.0" layoutX="133.0" layoutY="258.0" startX="-100.0" stroke="#45322e" strokeWidth="0.5" />
-                <Button fx:id="confirmarBTN" layoutX="33.0" layoutY="311.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="147.0" style="-fx-background-color: #009000;" text="Confirmar" textFill="#fafafa">
+                <Button fx:id="confirmarBTN" onAction="#nuevoServicio" layoutX="33.0" layoutY="311.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="147.0" style="-fx-background-color: #009000;" text="Confirmar" textFill="#fafafa">
                     <font>
                         <Font name="System Bold Italic" size="17.0" />
                     </font>
