@@ -32,6 +32,7 @@
                <font>
                   <Font name="System Bold Italic" size="16.0" />
                </font></Button>
+            <Button layoutX="559.0" layoutY="6.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="pane" stylesheets="@../styles/Ayuda.css" />
          </children></Pane>
    </children>
 </AnchorPane>

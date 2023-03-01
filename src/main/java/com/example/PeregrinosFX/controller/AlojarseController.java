@@ -3,6 +3,7 @@ package com.example.PeregrinosFX.controller;
 import com.example.PeregrinosFX.bean.Estancia;
 import com.example.PeregrinosFX.bean.Parada;
 import com.example.PeregrinosFX.bean.Peregrino;
+import com.example.PeregrinosFX.bean.Servicio;
 import com.example.PeregrinosFX.config.StageManager;
 import com.example.PeregrinosFX.service.CarnetService;
 import com.example.PeregrinosFX.service.ParadaService;
@@ -24,6 +25,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import static com.example.PeregrinosFX.bean.Servicio.db;
 import static com.example.PeregrinosFX.controller.LoginController.rol;
 import static com.example.PeregrinosFX.controller.LoginController.u;
 
@@ -62,6 +64,24 @@ public class AlojarseController implements Initializable {
     private Label vipLBL;
 
     @FXML
+    public Label servicioLBL;
+
+    @FXML
+    public TableView servicioTB;
+
+    @FXML
+    public TableColumn nombreTC;
+
+    @FXML
+    public TableColumn precioTC;
+
+    @FXML
+    public ComboBox serviciosCB;
+
+    @FXML
+    public Button addBTN;
+
+    @FXML
     private CheckBox estanciaCheck;
 
     @FXML
@@ -90,6 +110,7 @@ public class AlojarseController implements Initializable {
     public Label getParadaLBL() {
         return paradaLBL;
     }
+
 
     public void setParadaLBL(Label paradaLBL) {
         this.paradaLBL = paradaLBL;
@@ -225,10 +246,20 @@ public class AlojarseController implements Initializable {
         if (estanciaCheck.isSelected()) {
             vipLBL.setTextFill(Paint.valueOf("45322e"));
             vipCB.setDisable(false);
+            servicioLBL.setTextFill(Paint.valueOf("45322e"));
+            serviciosCB.setDisable(false);
+
+            ArrayList<Servicio> servicios = new ArrayList<Servicio>();
+            Servicio servicio = new Servicio();
+            for (Object o : db.queryByExample(servicio)){
+                servicios.add((Servicio) o);
+            }
 
         } else {
             vipLBL.setTextFill(Paint.valueOf("45322e70"));
             vipCB.setDisable(true);
+            servicioLBL.setTextFill(Paint.valueOf("45322e70"));
+            serviciosCB.setDisable(true);
 
         }
 

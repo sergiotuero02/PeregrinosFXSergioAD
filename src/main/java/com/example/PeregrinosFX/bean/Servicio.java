@@ -1,20 +1,32 @@
 package com.example.PeregrinosFX.bean;
 
-public class Servicio {
-    private long idServicio;
+import com.db4o.Db4oEmbedded;
+import com.db4o.ObjectContainer;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class Servicio implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -3114560015446897422L;
+
+    public static final ObjectContainer db = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "peregrinos.db4o");
     private String nombre;
     private double precio;
+    private ArrayList<Parada> paradas;
 
     public Servicio(){
 
     }
 
-    public long getIdServicio() {
-        return idServicio;
+    public ArrayList<Parada> getParadas() {
+        return paradas;
     }
 
-    public void setIdServicio(long idServicio) {
-        this.idServicio = idServicio;
+    public void setParadas(ArrayList<Parada> paradas) {
+        this.paradas = paradas;
     }
 
     public String getNombre() {
@@ -31,5 +43,12 @@ public class Servicio {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    @Override
+    public String toString() {
+        return
+               nombre + " " + precio +
+                "€ " + paradas;
     }
 }

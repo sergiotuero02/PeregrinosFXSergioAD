@@ -1,8 +1,10 @@
 package com.example.PeregrinosFX.controller;
 
 import com.example.PeregrinosFX.bean.Parada;
+import com.example.PeregrinosFX.bean.Servicio;
 import com.example.PeregrinosFX.config.StageManager;
 import com.example.PeregrinosFX.service.impl.ParadaServiceImpl;
+import com.example.PeregrinosFX.service.impl.ServicioServiceImpl;
 import com.example.PeregrinosFX.view.FxmlView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,10 +18,10 @@ import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.ResourceBundle;
 
-import static com.example.PeregrinosFX.controller.LoginController.rol;
-import static com.example.PeregrinosFX.controller.LoginController.u;
+import static com.example.PeregrinosFX.bean.Servicio.db;
 
 @Controller
 public class EditarServicioController implements Initializable {
@@ -69,57 +71,54 @@ public class EditarServicioController implements Initializable {
     private ComboBox serviciosCB;
 
     @FXML
+    private ComboBox paradasdelCB;
+
+    @FXML
     private Button addBTN;
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-            ArrayList<Parada> paradas = new ArrayList<Parada>();
-            paradas = (ArrayList<Parada>) paradaServiceImpl.findAll();
-            for (Parada p : paradas) {
-                paradasCB.getItems().add(p);
-            }
+
+        ServicioServiceImpl.cargarServicios(serviciosCB);
+        paradaServiceImpl.cargarCB(paradasCB, paradaServiceImpl);
+        paradaServiceImpl.cargarCB(paradasdelCB, paradaServiceImpl);
+
+    }
+
+    @FXML
+    private void cargarTabla(ActionEvent event) {
+        Servicio servicio = (Servicio) serviciosCB.getSelectionModel().getSelectedItem();
+        ArrayList<Parada> paradas = servicio.getParadas();
+        paradaTB.getItems().clear();
+
+        idParadaTC.setCellValueFactory(new PropertyValueFactory<>("idParada"));
+        nombreParadaTC.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+
+        for (Parada p : paradas) {
+            paradaTB.getItems().add(p);
         }
+
+        nombreTF.setText(servicio.getNombre());
+        precioTF.setText(String.valueOf(servicio.getPrecio()));
+    }
+
+    @FXML
+    public void editar(ActionEvent event) {
+
+    }
 
     @FXML
     private void addTabla(ActionEvent event) {
-        try {
+        Parada p = (Parada) paradasCB.getSelectionModel().getSelectedItem();
+        ParadaServiceImpl.addParadaTabla(paradaTB, idParadaTC, nombreParadaTC, p);
+    }
 
-            idParadaTC.setCellValueFactory(new PropertyValueFactory<>("idParada"));
-            nombreParadaTC.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-
-            Parada p = (Parada) paradasCB.getSelectionModel().getSelectedItem();
-            int contador = 0;
-
-            for (int i = 0; i < paradaTB.getItems().size(); i++) {
-                if (paradaTB.getItems().get(i) == p){
-                    contador++;
-                }
-            }
-
-            if (p == null){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("ERROR");
-                alert.setContentText("Introduzca la parada");
-                alert.show();
-            }
-            else if (contador == 0 && p != null) {
-                paradaTB.getItems().add(p);
-            }
-            else{
-                Alert alerta = new Alert(Alert.AlertType.ERROR);
-                alerta.setTitle("ERROR");
-                alerta.setContentText("Parada ya seleccionada");
-                alerta.show();
-            }
-
-        } catch (NullPointerException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Introduzca todos los campos");
-            alert.setContentText("Introduzca todos los campos");
-            alert.show();
-
-
-        }
+    @FXML
+    private void borrarTabla(ActionEvent event) {
+        Parada p = (Parada) paradasdelCB.getSelectionModel().getSelectedItem();
+        ParadaServiceImpl.delParadaTabla(paradaTB, p);
     }
 
     @FXML

@@ -1,10 +1,13 @@
 package com.example.PeregrinosFX.controller;
 
+import com.db4o.Db4oEmbedded;
+import com.db4o.ObjectContainer;
 import com.example.PeregrinosFX.bean.Estancia;
 import com.example.PeregrinosFX.bean.Parada;
 import com.example.PeregrinosFX.bean.Servicio;
 import com.example.PeregrinosFX.config.StageManager;
 import com.example.PeregrinosFX.service.impl.ParadaServiceImpl;
+import com.example.PeregrinosFX.service.impl.ServicioServiceImpl;
 import com.example.PeregrinosFX.view.FxmlView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,8 +25,9 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.util.*;
+
+import static com.example.PeregrinosFX.bean.Servicio.db;
 
 @Controller
 public class NuevoServicioController implements Initializable {
@@ -71,61 +75,19 @@ public class NuevoServicioController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ArrayList<Parada> paradas = new ArrayList<Parada>();
-        paradas = (ArrayList<Parada>) paradaServiceImpl.findAll();
-        for (Parada p : paradas) {
-            paradasCB.getItems().add(p);
-        }
-
+        paradaServiceImpl.cargarCB(paradasCB, paradaServiceImpl);
     }
 
     @FXML
     private void addTabla(ActionEvent event) {
-        try {
-
-            idParadaTC.setCellValueFactory(new PropertyValueFactory<>("idParada"));
-            nombreParadaTC.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-
-            Parada p = (Parada) paradasCB.getSelectionModel().getSelectedItem();
-            int contador = 0;
-
-            for (int i = 0; i < paradaTB.getItems().size(); i++) {
-                if (paradaTB.getItems().get(i) == p){
-                    contador++;
-                }
-            }
-
-            if (p == null){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("ERROR");
-                alert.setContentText("Introduzca la parada");
-                alert.show();
-            }
-            else if (contador == 0 && p != null) {
-                paradaTB.getItems().add(p);
-            }
-            else{
-                Alert alerta = new Alert(Alert.AlertType.ERROR);
-                alerta.setTitle("ERROR");
-                alerta.setContentText("Parada ya seleccionada");
-                alerta.show();
-            }
-
-        } catch (NullPointerException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Introduzca todos los campos");
-            alert.setContentText("Introduzca todos los campos");
-            alert.show();
-
-
-        }
+        Parada p = (Parada) paradasCB.getSelectionModel().getSelectedItem();
+        ParadaServiceImpl.addParadaTabla(paradaTB, idParadaTC, nombreParadaTC, p);
     }
 
     @FXML
-    private void nuevoServicio(ActionEvent event){
-        Servicio s = new Servicio();
-        s.setNombre(nombreTF.getText());
-        s.setPrecio(Double.parseDouble(precioTF.getText()));
+    private void nuevoServicio(ActionEvent event) {
+        ServicioServiceImpl.addServicio(nombreTF, precioTF, paradaTB);
+
     }
 
     @FXML
