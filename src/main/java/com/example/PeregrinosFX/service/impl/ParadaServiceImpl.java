@@ -2,6 +2,7 @@ package com.example.PeregrinosFX.service.impl;
 
 import com.example.PeregrinosFX.bean.Estancia;
 import com.example.PeregrinosFX.bean.Parada;
+import com.example.PeregrinosFX.bean.User;
 import com.example.PeregrinosFX.repository.ParadaRepository;
 import com.example.PeregrinosFX.service.EstanciaService;
 import com.example.PeregrinosFX.service.ParadaService;

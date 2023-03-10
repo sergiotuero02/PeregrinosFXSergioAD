@@ -1,5 +1,6 @@
 package com.example.PeregrinosFX.controller;
 
+import com.db4o.ObjectSet;
 import com.example.PeregrinosFX.bean.Estancia;
 import com.example.PeregrinosFX.bean.Parada;
 import com.example.PeregrinosFX.bean.Peregrino;
@@ -14,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Paint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -67,6 +69,9 @@ public class AlojarseController implements Initializable {
     public Label servicioLBL;
 
     @FXML
+    public Label pagosLBL;
+
+    @FXML
     public TableView servicioTB;
 
     @FXML
@@ -89,6 +94,9 @@ public class AlojarseController implements Initializable {
 
     @FXML
     private ComboBox peregrinoCB;
+
+    @FXML
+    private ComboBox pagosCB;
 
     @FXML
     private CheckBox vipCB;
@@ -243,26 +251,82 @@ public class AlojarseController implements Initializable {
     //Método que activa o desactiva el campo vip en función de si hay estancia o no
     @FXML
     private void estanciaClick(ActionEvent event) throws IOException {
+        servicioTB.getItems().clear();
+        serviciosCB.getItems().clear();
+        ObjectSet<Servicio> servicios = null;
+        Parada parada = (Parada) paradaCB.getSelectionModel().getSelectedItem();
         if (estanciaCheck.isSelected()) {
             vipLBL.setTextFill(Paint.valueOf("45322e"));
             vipCB.setDisable(false);
             servicioLBL.setTextFill(Paint.valueOf("45322e"));
             serviciosCB.setDisable(false);
-
-            ArrayList<Servicio> servicios = new ArrayList<Servicio>();
+            pagosLBL.setTextFill(Paint.valueOf("45322e"));
+            pagosCB.setDisable(false);
             Servicio servicio = new Servicio();
-            for (Object o : db.queryByExample(servicio)){
-                servicios.add((Servicio) o);
-            }
+            ArrayList<Long> ids = new ArrayList<Long>();
+            servicios = db.queryByExample(servicio);
+            ArrayList<Servicio> services = new ArrayList<Servicio>();
+            for (Servicio s : servicios) {
+                    for (Long id : s.getIdParadas()) {
+                        if (id.equals(parada.getIdParada())) {
+                            services.add(servicio);
+                            serviciosCB.getItems().add(s);
+                            break;
+                        }
+                    }
 
-        } else {
+        }
+    } else {
             vipLBL.setTextFill(Paint.valueOf("45322e70"));
             vipCB.setDisable(true);
             servicioLBL.setTextFill(Paint.valueOf("45322e70"));
             serviciosCB.setDisable(true);
+            pagosLBL.setTextFill(Paint.valueOf("45322e70"));
+            pagosCB.setDisable(true);
 
         }
 
+    }
+
+    @FXML
+    private void addServicio(ActionEvent event){
+        Servicio servicio = (Servicio) serviciosCB.getSelectionModel().getSelectedItem();
+
+        try {
+            nombreTC.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+            precioTC.setCellValueFactory(new PropertyValueFactory<>("precio"));
+
+            boolean servicioSel = false;
+
+            for (Object servicioAux : servicioTB.getItems()) {
+                if (((Servicio) servicioAux).getNombre().equalsIgnoreCase(servicio.getNombre())) {
+                    servicioSel = true;
+                    break;
+                }
+            }
+
+            if (servicio == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR");
+                alert.setContentText("Introduzca la parada");
+                alert.show();
+            } else if (!servicioSel && servicio != null) {
+                servicioTB.getItems().add(servicio);
+            } else {
+                Alert alerta = new Alert(Alert.AlertType.ERROR);
+                alerta.setTitle("ERROR");
+                alerta.setContentText("Servicio ya seleccionado");
+                alerta.show();
+            }
+
+        } catch (NullPointerException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Introduzca todos los campos");
+            alert.setContentText("Introduzca todos los campos");
+            alert.show();
+
+
+        }
     }
 
     @FXML
@@ -281,6 +345,10 @@ public class AlojarseController implements Initializable {
         //a ese peregrino o parada, pero si es un admin general los cargaremos todos
         ArrayList<Peregrino> peregrinos = new ArrayList<>();
         peregrinos = (ArrayList<Peregrino>) peregrinoService.findAll();
+        pagosCB.getItems().add("Bizum");
+        pagosCB.getItems().add("VISA/MASTERCARD");
+        pagosCB.getItems().add("Efectivo");
+        pagosCB.getItems().add("Transferencia");
         for (Peregrino p1 : peregrinos) {
             peregrinoCB.getItems().add(p1);
 

@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.ResourceBundle;
 
 import static com.example.PeregrinosFX.bean.Servicio.db;
@@ -77,7 +76,6 @@ public class EditarServicioController implements Initializable {
     private Button addBTN;
 
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -90,7 +88,12 @@ public class EditarServicioController implements Initializable {
     @FXML
     private void cargarTabla(ActionEvent event) {
         Servicio servicio = (Servicio) serviciosCB.getSelectionModel().getSelectedItem();
-        ArrayList<Parada> paradas = servicio.getParadas();
+        ArrayList<Parada> paradaSer = new ArrayList<Parada>();
+        for (Long id : servicio.getIdParadas()){
+                Parada p = paradaServiceImpl.findByIdParada(id);
+                paradaSer.add(p);
+        }
+        ArrayList<Parada> paradas = paradaSer;
         paradaTB.getItems().clear();
 
         idParadaTC.setCellValueFactory(new PropertyValueFactory<>("idParada"));
@@ -106,7 +109,8 @@ public class EditarServicioController implements Initializable {
 
     @FXML
     public void editar(ActionEvent event) {
-
+        Servicio servicio = (Servicio) serviciosCB.getSelectionModel().getSelectedItem();
+        ServicioServiceImpl.editarServicio(nombreTF, precioTF, paradaTB, servicio);
     }
 
     @FXML

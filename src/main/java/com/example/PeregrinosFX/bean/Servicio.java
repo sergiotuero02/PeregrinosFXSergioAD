@@ -15,18 +15,18 @@ public class Servicio implements Serializable {
     public static final ObjectContainer db = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "peregrinos.db4o");
     private String nombre;
     private double precio;
-    private ArrayList<Parada> paradas;
+    private ArrayList<Long> idParadas;
 
     public Servicio(){
 
     }
 
-    public ArrayList<Parada> getParadas() {
-        return paradas;
+    public ArrayList<Long> getIdParadas() {
+        return idParadas;
     }
 
-    public void setParadas(ArrayList<Parada> paradas) {
-        this.paradas = paradas;
+    public void setIdParadas(ArrayList<Long> idParadas) {
+        this.idParadas = idParadas;
     }
 
     public String getNombre() {
@@ -49,6 +49,6 @@ public class Servicio implements Serializable {
     public String toString() {
         return
                nombre + " " + precio +
-                "€ " + paradas;
+                "€ ";
     }
 }
