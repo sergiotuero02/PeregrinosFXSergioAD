@@ -12,7 +12,6 @@ public class Servicio implements Serializable {
     @Serial
     private static final long serialVersionUID = -3114560015446897422L;
 
-    public static final ObjectContainer db = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "peregrinos.db4o");
     private String nombre;
     private double precio;
     private ArrayList<Long> idParadas;

@@ -27,8 +27,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
 
-import static com.example.PeregrinosFX.bean.Servicio.db;
-
 @Controller
 public class NuevoServicioController implements Initializable {
 

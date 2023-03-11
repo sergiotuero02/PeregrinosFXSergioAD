@@ -20,7 +20,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import static com.example.PeregrinosFX.bean.Servicio.db;
 
 @Controller
 public class EditarServicioController implements Initializable {

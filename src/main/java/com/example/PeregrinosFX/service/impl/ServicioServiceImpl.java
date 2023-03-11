@@ -9,7 +9,7 @@ import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
 
-import static com.example.PeregrinosFX.bean.Servicio.db;
+import static com.example.PeregrinosFX.Connections.Db4oConnect.db;
 
 public class ServicioServiceImpl {
 

@@ -4,24 +4,41 @@ import java.util.ArrayList;
 
 public class ConjuntoContratado {
 
-    private double precio;
-    private String modoPago;
-    private String extra;
+    private double precioTotal;
+    private char modoPago;
+    private String extra = null;
     private ArrayList<Servicio> servicios;
+    private Estancia estancia;
+
+    public double getPrecioTotal() {
+        return precioTotal;
+    }
+
+    public void setPrecioTotal(double precioTotal) {
+        this.precioTotal = precioTotal;
+    }
+
+    public Estancia getEstancia() {
+        return estancia;
+    }
+
+    public void setEstancia(Estancia estancia) {
+        this.estancia = estancia;
+    }
 
     public double getPrecio() {
-        return precio;
+        return precioTotal;
     }
 
     public void setPrecio(double precio) {
-        this.precio = precio;
+        this.precioTotal = precio;
     }
 
-    public String getModoPago() {
+    public char getModoPago() {
         return modoPago;
     }
 
-    public void setModoPago(String modoPago) {
+    public void setModoPago(char modoPago) {
         this.modoPago = modoPago;
     }
 
@@ -39,5 +56,10 @@ public class ConjuntoContratado {
 
     public void setServicios(ArrayList<Servicio> servicios) {
         this.servicios = servicios;
+    }
+
+    @Override
+    public String toString() {
+        return servicios.toString() + "\n" + "Extras: " + extra + "\n" + "Modo de pago: " + modoPago + "\n" + "Total: " + precioTotal + "€";
     }
 }

@@ -1,21 +1,22 @@
 package com.example.PeregrinosFX.config;
 
+
+import static org.slf4j.LoggerFactory.getLogger;
+
+import java.util.Objects;
+
 import com.example.PeregrinosFX.view.FxmlView;
+import org.slf4j.Logger;
+
+
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.slf4j.Logger;
-import org.springframework.stereotype.Component;
-
-import java.util.Objects;
-
-import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Manages switching Scenes on the Primary Stage
  */
-
 public class StageManager {
 
     private static final Logger LOG = getLogger(StageManager.class);
@@ -31,24 +32,24 @@ public class StageManager {
         Parent viewRootNodeHierarchy = loadViewNodeHierarchy(view.getFxmlFile());
         show(viewRootNodeHierarchy, view.getTitle());
     }
-    
+
     private void show(final Parent rootnode, String title) {
         Scene scene = prepareScene(rootnode);
         //scene.getStylesheets().add("/styles/Styles.css");
-        
+
         //primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setTitle(title);
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.centerOnScreen();
-        
+
         try {
             primaryStage.show();
         } catch (Exception exception) {
             logAndExit ("Unable to show scene for title" + title,  exception);
         }
     }
-    
+
     private Scene prepareScene(Parent rootnode){
         Scene scene = primaryStage.getScene();
 
@@ -75,11 +76,12 @@ public class StageManager {
         }
         return rootNode;
     }
-    
-    
+
+
     private void logAndExit(String errorMsg, Exception exception) {
         LOG.error(errorMsg, exception, exception.getCause());
         Platform.exit();
     }
 
 }
+
