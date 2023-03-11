@@ -1,7 +1,6 @@
 package com.example.PeregrinosFX.controller;
 
-import com.db4o.Db4oEmbedded;
-import com.db4o.ObjectContainer;
+
 import com.example.PeregrinosFX.bean.Estancia;
 import com.example.PeregrinosFX.bean.Parada;
 import com.example.PeregrinosFX.bean.Servicio;
@@ -27,6 +26,8 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
 
+import static com.example.PeregrinosFX.bean.Servicio.db;
+
 @Controller
 public class NuevoServicioController implements Initializable {
 
@@ -51,10 +52,10 @@ public class NuevoServicioController implements Initializable {
     private javafx.scene.control.TextField precioTF;
 
     @FXML
-    private javafx.scene.control.Button confirmarBTN;
+    private Button confirmarBTN;
 
     @FXML
-    private javafx.scene.control.Button cancelarBTN;
+    private Button cancelarBTN;
 
     @FXML
     private TableView paradaTB;
@@ -69,7 +70,7 @@ public class NuevoServicioController implements Initializable {
     private ComboBox paradasCB;
 
     @FXML
-    private javafx.scene.control.Button addBTN;
+    private Button addBTN;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -125,19 +126,19 @@ public class NuevoServicioController implements Initializable {
         this.precioTF = precioTF;
     }
 
-    public javafx.scene.control.Button getConfirmarBTN() {
+    public Button getConfirmarBTN() {
         return confirmarBTN;
     }
 
-    public void setConfirmarBTN(javafx.scene.control.Button confirmarBTN) {
+    public void setConfirmarBTN(Button confirmarBTN) {
         this.confirmarBTN = confirmarBTN;
     }
 
-    public javafx.scene.control.Button getCancelarBTN() {
+    public Button getCancelarBTN() {
         return cancelarBTN;
     }
 
-    public void setCancelarBTN(javafx.scene.control.Button cancelarBTN) {
+    public void setCancelarBTN(Button cancelarBTN) {
         this.cancelarBTN = cancelarBTN;
     }
 
@@ -173,7 +174,7 @@ public class NuevoServicioController implements Initializable {
         this.paradasCB = paradasCB;
     }
 
-    public javafx.scene.control.Button getAddBTN() {
+    public Button getAddBTN() {
         return addBTN;
     }
 

@@ -1,15 +1,13 @@
 package com.example.PeregrinosFX.controller;
 
+
 import com.db4o.ObjectSet;
 import com.example.PeregrinosFX.bean.*;
 import com.example.PeregrinosFX.config.StageManager;
-import com.example.PeregrinosFX.repository.ConjuntoContratadoRepository;
-import com.example.PeregrinosFX.repository.ServicioRepository;
 import com.example.PeregrinosFX.service.CarnetService;
 import com.example.PeregrinosFX.service.ParadaService;
 import com.example.PeregrinosFX.service.PeregrinoService;
 import com.example.PeregrinosFX.service.impl.EstanciaServiceImpl;
-import com.example.PeregrinosFX.service.impl.ParadaServiceImpl;
 import com.example.PeregrinosFX.view.FxmlView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,6 +25,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import static com.example.PeregrinosFX.bean.Servicio.db;
 import static com.example.PeregrinosFX.controller.LoginController.rol;
 import static com.example.PeregrinosFX.controller.LoginController.u;
 
@@ -249,7 +248,7 @@ public class AlojarseController implements Initializable {
                         cc.setServicios(servicios);
                         cc.setPrecioTotal(Double.parseDouble(totalLBL.getText()));
                         cc.setModoPago(pagosCB.getSelectionModel().getSelectedItem().toString().charAt(0));
-                        ConjuntoContratadoRepository.guardarConjunto(cc);
+                        db.store(cc);
 
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Conjunto contratado");
@@ -267,13 +266,8 @@ public class AlojarseController implements Initializable {
                 alert.setContentText("El peregrino " + peregrino.getNombre() + " ha realizado la parada correctamente.");
                 alert.showAndWait();
 
-                //En función del perfil/rol redirigiremos al usuario hacia el menú correspondiente
-                if (rol == 2) {
-                    stageManager.switchScene(FxmlView.MENUADMINPARADA);
-                }
-                if (rol == 3) {
-                    stageManager.switchScene(FxmlView.MENUADMINGENERAL);
-                }
+                stageManager.switchScene(FxmlView.PREGUNTARENVIO);
+
             }
         } catch (NullPointerException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -288,7 +282,8 @@ public class AlojarseController implements Initializable {
     private void servicioSelected(ActionEvent event) throws IOException{
         serviciosCB.getItems().clear();
         servicioTB.getItems().clear();
-        ObjectSet<Servicio> servicios = ServicioRepository.buscarServicios();
+        Servicio servicio = new Servicio();
+        ObjectSet<Servicio> servicios = db.queryByExample(servicio);
         Parada parada = (Parada) paradaCB.getSelectionModel().getSelectedItem();
         for (Servicio s : servicios) {
             for (Long id : s.getIdParadas()) {

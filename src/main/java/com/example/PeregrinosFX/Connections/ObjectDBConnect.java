@@ -1,6 +1,5 @@
 package com.example.PeregrinosFX.Connections;
 
-import com.objectdb.jpa.Provider;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;

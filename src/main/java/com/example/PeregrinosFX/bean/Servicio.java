@@ -7,11 +7,11 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Servicio implements Serializable {
+public class Servicio{
 
-    @Serial
-    private static final long serialVersionUID = -3114560015446897422L;
 
+
+    public static ObjectContainer db = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "peregrinos.db4o");
     private String nombre;
     private double precio;
     private ArrayList<Long> idParadas;

@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +16,7 @@ import java.util.ResourceBundle;
 
 import static com.example.PeregrinosFX.controller.LoginController.rol;
 
+@Controller
 public class PreguntarEnvioController implements Initializable {
 
     @Lazy

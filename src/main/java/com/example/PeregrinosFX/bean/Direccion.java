@@ -1,7 +1,6 @@
 package com.example.PeregrinosFX.bean;
 
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Entity;
 
 @Embeddable
 public class Direccion {
