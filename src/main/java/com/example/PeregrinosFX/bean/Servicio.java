@@ -8,9 +8,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Servicio{
-
-
-
     public static ObjectContainer db = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "peregrinos.db4o");
     private String nombre;
     private double precio;

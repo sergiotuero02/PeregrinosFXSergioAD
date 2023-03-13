@@ -58,7 +58,7 @@ public class MenuAdminParadaController implements Initializable {
 
     @FXML
     private void verEnvio(ActionEvent event) throws IOException {
-        stageManager.switchScene(FxmlView.MENUPRINCIPAL);
+        stageManager.switchScene(FxmlView.VERENVIO);
     }
 
 

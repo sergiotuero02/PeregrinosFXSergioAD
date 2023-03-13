@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static com.example.PeregrinosFX.Connections.ObjectDBConnect.em;
-import static com.example.PeregrinosFX.bean.Servicio.db;
+
 import static com.example.PeregrinosFX.controller.AlojarseController.paradaEnvio;
 import static com.example.PeregrinosFX.controller.LoginController.rol;
 
@@ -93,17 +93,7 @@ public class EnvioACasaController implements Initializable {
             ObjectDBConnect.em.getTransaction().begin();
             ObjectDBConnect.em.persist(envio);
             ObjectDBConnect.em.getTransaction().commit();
-            TypedQuery<EnvioACasa> query = em.createQuery("SELECT p FROM EnvioACasa p",
-                    EnvioACasa.class);
-            List<EnvioACasa> results = query.getResultList();
-            if (results.isEmpty()) {
-                System.out.println("La lista de resultados está vacía.");
-            } else {
 
-                for (EnvioACasa e : results) {
-                    System.out.println("Envío: " + e);
-                }
-            }
         } catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");

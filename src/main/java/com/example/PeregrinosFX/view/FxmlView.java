@@ -157,7 +157,17 @@ public enum FxmlView {
             return "/fxml/EnvioACasa.fxml";
         }
     },
+    VERENVIO {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("verenvio.title");
+        }
 
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/VerEnvios.fxml";
+        }
+    },
     ALOJARSE {
         @Override
         public String getTitle() {
