@@ -146,18 +146,6 @@ public enum FxmlView {
         }
     },
 
-    PREGUNTARENVIO {
-        @Override
-        public String getTitle() {
-            return getStringFromResourceBundle("preguntarenvio.title");
-        }
-
-        @Override
-        public String getFxmlFile() {
-            return "/fxml/PreguntarEnvio.fxml";
-        }
-    },
-
     ENVIO {
         @Override
         public String getTitle() {

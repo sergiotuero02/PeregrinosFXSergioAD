@@ -1,27 +1,38 @@
 package com.example.PeregrinosFX.bean;
 
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import javax.persistence.*;
+import java.util.Arrays;
 
 @Entity
 public class EnvioACasa {
     @Id
     @GeneratedValue
-    public long id;
+    public long idEnvio;
+
     public double peso;
-    public int[] volumen;
+
+    public double[] volumen;
+
     public boolean urgente = false;
-    @Embedded
+    @OneToOne(cascade = CascadeType.PERSIST)
     public Direccion direccion;
 
-    public long getId() {
-        return id;
+    public long idParada;
+
+    public long getIdParada() {
+        return idParada;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setIdParada(long idParada) {
+        this.idParada = idParada;
+    }
+
+    public long getId() {
+        return idEnvio;
+    }
+
+    public void setId(long idEnvio) {
+        this.idEnvio = idEnvio;
     }
 
     public double getPeso() {
@@ -32,11 +43,11 @@ public class EnvioACasa {
         this.peso = peso;
     }
 
-    public int[] getVolumen() {
+    public double[] getVolumen() {
         return volumen;
     }
 
-    public void setVolumen(int[] volumen) {
+    public void setVolumen(double[] volumen) {
         this.volumen = volumen;
     }
 
@@ -54,5 +65,16 @@ public class EnvioACasa {
 
     public void setUrgente(boolean urgente) {
         this.urgente = urgente;
+    }
+
+    @Override
+    public String toString() {
+        return "EnvioACasa{" +
+                "id=" + idEnvio +
+                ", peso=" + peso +
+                ", volumen=" + Arrays.toString(volumen) +
+                ", urgente=" + urgente +
+                ", direccion=" + direccion +
+                '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.example.PeregrinosFX.controller;
 
+import com.example.PeregrinosFX.Connections.ObjectDBConnect;
 import com.example.PeregrinosFX.bean.User;
 import com.example.PeregrinosFX.config.StageManager;
 import com.example.PeregrinosFX.service.impl.UserServiceImpl;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static com.example.PeregrinosFX.Connections.ObjectDBConnect.em;
 
 @Controller
 public class LoginController implements Initializable {
@@ -119,7 +122,6 @@ public class LoginController implements Initializable {
         if (userService.login(getUsuarioTF(), getContrasenaTF())) {
             //Si coinciden, buscaremos el usuario correspondiente en la bd y se lo asignamos a la variable static u
             u = userService.findByUsuario(getUsuarioTF());
-
             //En función del perfil del usuario mostramos un menú u otro
             Long idPerfil =u.getPerfil().getIdPerfil();
             if (idPerfil == 1) {

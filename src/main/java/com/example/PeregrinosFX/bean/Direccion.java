@@ -1,10 +1,15 @@
 package com.example.PeregrinosFX.bean;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
-@Embeddable
+@Entity
 public class Direccion {
 
+    @Id
+    @GeneratedValue
+    private long idDireccion;
     public String direccion;
     public String localidad;
 

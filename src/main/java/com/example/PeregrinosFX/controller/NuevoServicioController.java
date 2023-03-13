@@ -1,6 +1,7 @@
 package com.example.PeregrinosFX.controller;
 
-
+import com.db4o.Db4oEmbedded;
+import com.db4o.ObjectContainer;
 import com.example.PeregrinosFX.bean.Estancia;
 import com.example.PeregrinosFX.bean.Parada;
 import com.example.PeregrinosFX.bean.Servicio;
@@ -72,6 +73,13 @@ public class NuevoServicioController implements Initializable {
     @FXML
     private Button addBTN;
 
+    @FXML
+    private javafx.scene.control.Label envioLBL;
+
+    @FXML
+    private CheckBox envioCB;
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         paradaServiceImpl.cargarCB(paradasCB, paradaServiceImpl);
@@ -87,6 +95,21 @@ public class NuevoServicioController implements Initializable {
     private void nuevoServicio(ActionEvent event) {
         ServicioServiceImpl.addServicio(nombreTF, precioTF, paradaTB);
 
+    }
+
+    @FXML
+    private void check(ActionEvent event){
+    if(envioCB.isSelected()){
+        nombreTF.setText("Envio a casa");
+        precioTF.setText("30");
+        nombreTF.setDisable(true);
+        precioTF.setDisable(true);
+    }else{
+        nombreTF.setText("");
+        precioTF.setText("");
+        nombreTF.setDisable(false);
+        precioTF.setDisable(false);
+    }
     }
 
     @FXML
