@@ -4,6 +4,7 @@ import com.example.PeregrinosFX.Connections.ObjectDBConnect;
 import com.example.PeregrinosFX.bean.Direccion;
 import com.example.PeregrinosFX.bean.EnvioACasa;
 import com.example.PeregrinosFX.config.StageManager;
+import com.example.PeregrinosFX.service.impl.EnvioServiceImpl;
 import com.example.PeregrinosFX.view.FxmlView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +31,9 @@ public class EnvioACasaController implements Initializable {
     @Autowired
     private StageManager stageManager;
 
+    @Lazy
+    @Autowired
+    private EnvioServiceImpl envioServiceImpl;
     @FXML
     private Label direccionLBL;
     @FXML
@@ -68,39 +72,8 @@ public class EnvioACasaController implements Initializable {
 
     @FXML
     private void enviarACasa(ActionEvent event){
-    if(direccionTF.equals("") || localidadTF.equals("") || alturaTF.equals("") || anchoTF.equals("") || profundoTF.equals("") || pesoTF.equals("")){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("ERROR");
-        alert.setContentText("Introduzca todos los campos");
-        alert.show();
-    }else {
-        try {
-            Direccion direccion = new Direccion();
-            EnvioACasa envio = new EnvioACasa();
-            double[]dimensiones = new double[3];
-            dimensiones[0] = Double.parseDouble(alturaTF.getText());
-            dimensiones[1] = Double.parseDouble(anchoTF.getText());
-            dimensiones[2] = Double.parseDouble(profundoTF.getText());
-
-            direccion.setDireccion(direccionTF.getText());
-            direccion.setLocalidad(localidadTF.getText());
-
-            envio.setVolumen(dimensiones);
-            envio.setDireccion(direccion);
-            envio.setPeso(Double.parseDouble(pesoTF.getText()));
-            envio.setUrgente(urgenteCB.isSelected());
-            envio.setIdParada(paradaEnvio.getIdParada());
-            ObjectDBConnect.em.getTransaction().begin();
-            ObjectDBConnect.em.persist(envio);
-            ObjectDBConnect.em.getTransaction().commit();
-
-        } catch (NumberFormatException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("ERROR");
-            alert.setContentText("El peso, la altura, el ancho y la profundidad deben ser un número");
-            alert.show();
-        }
-    }}
+        envioServiceImpl.guardarEnvio(direccionTF, localidadTF, alturaTF, anchoTF, profundoTF, pesoTF, urgenteCB);
+    }
 
     @FXML
     private void cancelarAction(ActionEvent event) throws IOException {

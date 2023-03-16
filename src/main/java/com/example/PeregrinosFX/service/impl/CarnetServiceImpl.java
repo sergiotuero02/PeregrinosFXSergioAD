@@ -157,10 +157,15 @@ public class CarnetServiceImpl implements CarnetService {
     }
 
     public void backup(){
-        ArrayList<Carnet> carnets = new ArrayList<Carnet>();
-        carnets = (ArrayList<Carnet>) findAll();
+        ArrayList<Carnet> carnets  = (ArrayList<Carnet>) findAll();
+        String[] carnetsBackup = new String[carnets.size()];
+        for(int i = 0; i < carnetsBackup.length; i++){
+            carnetsBackup[i] = carnets.get(i).toString();
+        }
         String fileName = "backupcarnets " + LocalDate.now();
-        CarnetBackup carnetBackup = new CarnetBackup(fileName, carnets);
+        CarnetBackup carnetBackup = new CarnetBackup();
+        carnetBackup.setFileName(fileName);
+        carnetBackup.setCarnetsBackup(carnetsBackup);
         mongoRepository.save(carnetBackup);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("ÉXITO!");
@@ -200,7 +205,7 @@ public class CarnetServiceImpl implements CarnetService {
 
     @Override
     public List<Carnet> findAll() {
-        return null;
+        return carnetRespository.findAll();
     }
 
     @Override

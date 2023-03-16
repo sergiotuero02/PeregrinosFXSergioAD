@@ -1,11 +1,11 @@
 package com.example.PeregrinosFX.service.impl;
 
+import com.example.PeregrinosFX.Connections.ObjectDBConnect;
+import com.example.PeregrinosFX.bean.Direccion;
 import com.example.PeregrinosFX.bean.EnvioACasa;
 import com.example.PeregrinosFX.bean.Parada;
 import com.example.PeregrinosFX.repository.EnvioRepository;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.PeregrinosFX.Connections.ObjectDBConnect.em;
+import static com.example.PeregrinosFX.controller.AlojarseController.paradaEnvio;
 
 @Service
 public class EnvioServiceImpl {
@@ -21,6 +22,39 @@ public class EnvioServiceImpl {
     @Autowired
     public EnvioRepository envioRepository;
 
+    public void guardarEnvio(TextField direccionTF, TextField localidadTF, TextField alturaTF, TextField anchoTF, TextField profundoTF, TextField pesoTF, CheckBox urgenteCB){
+        if(direccionTF.equals("") || localidadTF.equals("") || alturaTF.equals("") || anchoTF.equals("") || profundoTF.equals("") || pesoTF.equals("")){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setContentText("Introduzca todos los campos");
+            alert.show();
+        }else {
+            try {
+                Direccion direccion = new Direccion();
+                EnvioACasa envio = new EnvioACasa();
+                double[]dimensiones = new double[3];
+                dimensiones[0] = Double.parseDouble(alturaTF.getText());
+                dimensiones[1] = Double.parseDouble(anchoTF.getText());
+                dimensiones[2] = Double.parseDouble(profundoTF.getText());
+
+                direccion.setDireccion(direccionTF.getText());
+                direccion.setLocalidad(localidadTF.getText());
+
+                envio.setVolumen(dimensiones);
+                envio.setDireccion(direccion);
+                envio.setPeso(Double.parseDouble(pesoTF.getText()));
+                envio.setUrgente(urgenteCB.isSelected());
+                envio.setIdParada(paradaEnvio.getIdParada());
+                envioRepository.addEnvio(envio);
+
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR");
+                alert.setContentText("El peso, la altura, el ancho y la profundidad deben ser un número");
+                alert.show();
+            }
+        }
+        }
     public void verEnvios(ListView enviosTA, Parada parada){
         enviosTA.getItems().clear();
         List<EnvioACasa> envios = envioRepository.verEnvios();

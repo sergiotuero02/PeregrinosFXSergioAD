@@ -88,7 +88,6 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-
     @Override
     public boolean login(String usuario, String contrasenia) {
         //Buscamos el usuario en la bd y comprobamos que el usuario exista, en caso de que exista comprobamos que la contraseña coincida

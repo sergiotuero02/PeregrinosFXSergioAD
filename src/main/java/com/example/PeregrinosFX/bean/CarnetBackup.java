@@ -7,11 +7,15 @@ import java.util.ArrayList;
 @Document(collection = "Carnets Backup")
 public class CarnetBackup {
     public String fileName;
-    public ArrayList<Carnet> carnetsBackup = new ArrayList<Carnet>();
+    public String[] carnetsBackup;
 
-    public CarnetBackup(String fileName, ArrayList<Carnet> carnetsBackup) {
+    public CarnetBackup(String fileName, String[] carnetsBackup) {
         this.fileName = fileName;
         this.carnetsBackup = carnetsBackup;
+    }
+
+    public CarnetBackup() {
+
     }
 
     public String getFileName() {
@@ -22,11 +26,11 @@ public class CarnetBackup {
         this.fileName = fileName;
     }
 
-    public ArrayList<Carnet> getCarnetsBackup() {
+    public String[] getCarnetsBackup() {
         return carnetsBackup;
     }
 
-    public void setCarnetsBackup(ArrayList<Carnet> carnetsBackup) {
+    public void setCarnetsBackup(String[] carnetsBackup) {
         this.carnetsBackup = carnetsBackup;
     }
 }
