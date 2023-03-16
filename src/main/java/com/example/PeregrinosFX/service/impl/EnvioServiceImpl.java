@@ -1,24 +1,31 @@
 package com.example.PeregrinosFX.service.impl;
 
-import com.example.PeregrinosFX.Connections.ObjectDBConnect;
 import com.example.PeregrinosFX.bean.Direccion;
 import com.example.PeregrinosFX.bean.EnvioACasa;
 import com.example.PeregrinosFX.bean.Parada;
+import com.example.PeregrinosFX.config.StageManager;
 import com.example.PeregrinosFX.repository.EnvioRepository;
-import javafx.scene.control.*;
+import com.example.PeregrinosFX.view.FxmlView;
+import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.TypedQuery;
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.PeregrinosFX.Connections.ObjectDBConnect.em;
+import static com.example.PeregrinosFX.controller.LoginController.rol;
 import static com.example.PeregrinosFX.service.impl.EstanciaServiceImpl.paradaEnvio;
+
 
 @Service
 public class EnvioServiceImpl {
 
+    @Lazy
+    @Autowired
+    private StageManager stageManager;
     @Autowired
     public EnvioRepository envioRepository;
 
@@ -47,6 +54,16 @@ public class EnvioServiceImpl {
                 envio.setIdParada(paradaEnvio.getIdParada());
                 envioRepository.addEnvio(envio);
 
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("ÉXITO");
+                alert.setContentText("Envío procesado exitosamente");
+                alert.show();
+                if (rol == 2) {
+                    stageManager.switchScene(FxmlView.MENUADMINPARADA);
+                }
+                if (rol == 3) {
+                    stageManager.switchScene(FxmlView.MENUADMINGENERAL);
+                }
             } catch (NumberFormatException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("ERROR");
