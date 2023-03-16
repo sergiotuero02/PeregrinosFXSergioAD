@@ -1,16 +1,11 @@
 package com.example.PeregrinosFX.controller;
 
-import com.example.PeregrinosFX.bean.Carnet;
-import com.example.PeregrinosFX.bean.CarnetBackup;
-import com.example.PeregrinosFX.bean.Parada;
 import com.example.PeregrinosFX.config.StageManager;
-import com.example.PeregrinosFX.repository.RepositorioMongo;
 import com.example.PeregrinosFX.service.impl.CarnetServiceImpl;
 import com.example.PeregrinosFX.view.FxmlView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -18,8 +13,6 @@ import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 @Controller

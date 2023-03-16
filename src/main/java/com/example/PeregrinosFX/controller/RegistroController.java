@@ -1,20 +1,13 @@
 package com.example.PeregrinosFX.controller;
 
-import com.example.PeregrinosFX.bean.*;
+import com.example.PeregrinosFX.bean.Parada;
+import com.example.PeregrinosFX.bean.User;
 import com.example.PeregrinosFX.config.StageManager;
 import com.example.PeregrinosFX.service.CarnetService;
 import com.example.PeregrinosFX.service.ParadaService;
 import com.example.PeregrinosFX.service.PeregrinoService;
-import com.example.PeregrinosFX.service.UserService;
 import com.example.PeregrinosFX.service.impl.UserServiceImpl;
 import com.example.PeregrinosFX.view.FxmlView;
-
-import java.io.IOException;
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,6 +16,11 @@ import javafx.scene.paint.Paint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 @Controller
 public class RegistroController implements Initializable {

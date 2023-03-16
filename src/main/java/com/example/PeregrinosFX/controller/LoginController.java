@@ -1,6 +1,5 @@
 package com.example.PeregrinosFX.controller;
 
-import com.example.PeregrinosFX.Connections.ObjectDBConnect;
 import com.example.PeregrinosFX.bean.User;
 import com.example.PeregrinosFX.config.StageManager;
 import com.example.PeregrinosFX.service.impl.UserServiceImpl;
@@ -19,8 +18,6 @@ import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import static com.example.PeregrinosFX.Connections.ObjectDBConnect.em;
 
 @Controller
 public class LoginController implements Initializable {

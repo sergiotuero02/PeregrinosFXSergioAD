@@ -1,28 +1,23 @@
 package com.example.PeregrinosFX.controller;
 
-import com.example.PeregrinosFX.Connections.ObjectDBConnect;
-import com.example.PeregrinosFX.bean.Direccion;
-import com.example.PeregrinosFX.bean.EnvioACasa;
 import com.example.PeregrinosFX.config.StageManager;
 import com.example.PeregrinosFX.service.impl.EnvioServiceImpl;
 import com.example.PeregrinosFX.view.FxmlView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import javax.persistence.TypedQuery;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
-import static com.example.PeregrinosFX.Connections.ObjectDBConnect.em;
-
-import static com.example.PeregrinosFX.controller.AlojarseController.paradaEnvio;
 import static com.example.PeregrinosFX.controller.LoginController.rol;
 
 @Controller

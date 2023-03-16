@@ -1,7 +1,9 @@
 package com.example.PeregrinosFX.controller;
 
 import com.db4o.ObjectSet;
-import com.example.PeregrinosFX.bean.*;
+import com.example.PeregrinosFX.bean.Parada;
+import com.example.PeregrinosFX.bean.Peregrino;
+import com.example.PeregrinosFX.bean.Servicio;
 import com.example.PeregrinosFX.config.StageManager;
 import com.example.PeregrinosFX.service.CarnetService;
 import com.example.PeregrinosFX.service.ParadaService;
@@ -20,7 +22,6 @@ import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -197,108 +198,12 @@ public class AlojarseController implements Initializable {
         this.cancelarBTN = cancelarBTN;
     }
 
-    public static Parada paradaEnvio;
 
     @FXML
     private void alojar(ActionEvent event) throws IOException {
         Peregrino peregrino = (Peregrino) peregrinoCB.getSelectionModel().getSelectedItem();
         Parada parada = (Parada) paradaCB.getSelectionModel().getSelectedItem();
-        boolean envio = false;
-
-        //estanciaServiceImpl.alojar(peregrino, parada, estanciaCheck, vipCB, servicioTB, pagosCB, extraTF, totalLBL);
-        try {
-            //Llamamos al método alojarse que nos va añadir un campo a la tabla peregrino_parada con el peregrino y la parada seleccionados
-            //!Este método nos permite añadir varias veces la misma combinación peregrino parada! por lo que un peregrino puede realizar la misma parada varias veces
-            estanciaServiceImpl.alojarse(peregrino, parada);
-
-            //Si hay una estancia la añadiremos, diferenciando si es vip o no
-            if (estanciaCheck.isSelected()) {
-                Estancia e = new Estancia();
-                if (vipCB.isSelected()) {
-
-                    peregrino.getCarnet().setNumVips(peregrino.getCarnet().getNumVips() + 1);
-
-                    e.setVip(true);
-                    e.setFecha(LocalDate.now());
-                    e.setParada(parada);
-                    e.setPeregrino(peregrino);
-
-                }
-                if (!vipCB.isSelected()) {
-
-                    e.setVip(false);
-                    e.setFecha(LocalDate.now());
-                    e.setParada(parada);
-                    e.setPeregrino(peregrino);
-
-                }
-                if (servicioTB.getItems().size() > 0) {
-                    if (pagosCB.getSelectionModel().getSelectedItem().equals(null)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("ERROR");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Introduzca un método de pago");
-                        alert.showAndWait();
-                    } else {
-                        ArrayList<Servicio> servicios = new ArrayList<Servicio>();
-                        for (Object o : servicioTB.getItems()) {
-                            Servicio s = (Servicio) o;
-                            servicios.add(s);
-                        }
-
-
-                        ConjuntoContratado cc = new ConjuntoContratado();
-                        cc.setEstancia(e);
-                        cc.setExtra(extraTF.getText());
-                        cc.setServicios(servicios);
-                        cc.setPrecioTotal(Double.parseDouble(totalLBL.getText()));
-                        cc.setModoPago(pagosCB.getSelectionModel().getSelectedItem().toString().charAt(0));
-                        paradaEnvio = parada;
-                        for (Servicio s : cc.getServicios()) {
-                            if (s.getNombre().equals("Envio a casa")) {
-                                envio = true;
-                            } else {
-                                envio = false;
-                            }
-                        }
-                        db.store(cc);
-
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Conjunto contratado");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Se le ha asignado el paquete de servicios " + cc);
-                        alert.showAndWait();
-
-                    }
-                } else {
-                    estanciaServiceImpl.addEstancia(e);
-                    carnetService.addCarnet(peregrino.getCarnet());
-                }
-                //Mostramos un mensaje informando del éxito de la operación
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Peregrino alojado");
-                alert.setHeaderText(null);
-                alert.setContentText("El peregrino " + peregrino.getNombre() + " ha realizado la parada correctamente.");
-                alert.showAndWait();
-                if (envio) {
-                    stageManager.switchScene(FxmlView.ENVIO);
-                } else {
-                    if (rol == 2) {
-                        stageManager.switchScene(FxmlView.MENUADMINPARADA);
-                    }
-                    if (rol == 3) {
-                        stageManager.switchScene(FxmlView.MENUADMINGENERAL);
-                    }
-                }
-            }
-
-        } catch (NullPointerException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Introduzca todos los campos");
-            alert.setHeaderText(null);
-            alert.setContentText("Introduzca todos los campos");
-            alert.show();
-        }
+        estanciaServiceImpl.alojar(peregrino, parada, estanciaCheck, vipCB, servicioTB, pagosCB, extraTF, totalLBL);
     }
 
     @FXML

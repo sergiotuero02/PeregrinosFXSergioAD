@@ -1,33 +1,21 @@
 package com.example.PeregrinosFX.controller;
 
-import com.db4o.Db4oEmbedded;
-import com.db4o.ObjectContainer;
-import com.example.PeregrinosFX.bean.Estancia;
 import com.example.PeregrinosFX.bean.Parada;
-import com.example.PeregrinosFX.bean.Servicio;
 import com.example.PeregrinosFX.config.StageManager;
 import com.example.PeregrinosFX.service.impl.ParadaServiceImpl;
 import com.example.PeregrinosFX.service.impl.ServicioServiceImpl;
 import com.example.PeregrinosFX.view.FxmlView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.util.*;
-
-import static com.example.PeregrinosFX.bean.Servicio.db;
+import java.util.ResourceBundle;
 
 @Controller
 public class NuevoServicioController implements Initializable {

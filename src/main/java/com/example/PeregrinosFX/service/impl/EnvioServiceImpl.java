@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.PeregrinosFX.Connections.ObjectDBConnect.em;
-import static com.example.PeregrinosFX.controller.AlojarseController.paradaEnvio;
+import static com.example.PeregrinosFX.service.impl.EstanciaServiceImpl.paradaEnvio;
 
 @Service
 public class EnvioServiceImpl {

@@ -1,6 +1,5 @@
 package com.example.PeregrinosFX.controller;
 
-import com.example.PeregrinosFX.bean.Parada;
 import com.example.PeregrinosFX.bean.Peregrino;
 import com.example.PeregrinosFX.config.StageManager;
 import com.example.PeregrinosFX.service.PeregrinoService;
