@@ -7,9 +7,9 @@ import java.util.ArrayList;
 @Document(collection = "Carnets Backup")
 public class CarnetBackup {
     public String fileName;
-    public String[] carnetsBackup;
+    public ArrayList<String> carnetsBackup;
 
-    public CarnetBackup(String fileName, String[] carnetsBackup) {
+    public CarnetBackup(String fileName, ArrayList<String> carnetsBackup) {
         this.fileName = fileName;
         this.carnetsBackup = carnetsBackup;
     }
@@ -26,11 +26,11 @@ public class CarnetBackup {
         this.fileName = fileName;
     }
 
-    public String[] getCarnetsBackup() {
+    public ArrayList<String> getCarnetsBackup() {
         return carnetsBackup;
     }
 
-    public void setCarnetsBackup(String[] carnetsBackup) {
+    public void setCarnetsBackup(ArrayList<String> carnetsBackup) {
         this.carnetsBackup = carnetsBackup;
     }
 }

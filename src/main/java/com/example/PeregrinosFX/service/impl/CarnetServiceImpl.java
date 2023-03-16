@@ -158,9 +158,9 @@ public class CarnetServiceImpl implements CarnetService {
 
     public void backup(){
         ArrayList<Carnet> carnets  = (ArrayList<Carnet>) findAll();
-        String[] carnetsBackup = new String[carnets.size()];
-        for(int i = 0; i < carnetsBackup.length; i++){
-            carnetsBackup[i] = carnets.get(i).toString();
+        ArrayList<String> carnetsBackup = new ArrayList<String>();
+        for(Carnet c : carnets){
+            carnetsBackup.add(c.toString());
         }
         String fileName = "backupcarnets " + LocalDate.now();
         CarnetBackup carnetBackup = new CarnetBackup();
