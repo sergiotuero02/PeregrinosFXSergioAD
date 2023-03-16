@@ -1,50 +1,46 @@
 package com.example.PeregrinosFX.controller;
 
-import com.example.PeregrinosFX.bean.EnvioACasa;
+import com.example.PeregrinosFX.bean.ConnectExistDB;
 import com.example.PeregrinosFX.bean.Parada;
 import com.example.PeregrinosFX.config.StageManager;
-import com.example.PeregrinosFX.service.impl.EnvioServiceImpl;
 import com.example.PeregrinosFX.service.impl.ParadaServiceImpl;
 import com.example.PeregrinosFX.view.FxmlView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import javax.persistence.TypedQuery;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
-import static com.example.PeregrinosFX.Connections.ObjectDBConnect.em;
 import static com.example.PeregrinosFX.controller.LoginController.rol;
 import static com.example.PeregrinosFX.controller.LoginController.u;
 
 @Controller
-public class VerEnviosController implements Initializable {
+public class VerCarnetsController implements Initializable {
+
     @Lazy
     @Autowired
     private StageManager stageManager;
     @Lazy
     @Autowired
     private ParadaServiceImpl paradaServiceImpl;
-
-    @Lazy
-    @Autowired
-    private EnvioServiceImpl envioServiceImpl;
     @FXML
     private Label paradaLBL;
     @FXML
     private ComboBox paradaCB;
     @FXML
-    private Label envioLBL;
+    private Label carnetLBL;
     @FXML
-    private ListView enviosTA;
+    private ListView carnetsLV;
     @FXML
     private Button buscarBTN;
     @FXML
@@ -61,9 +57,10 @@ public class VerEnviosController implements Initializable {
     }
 
     @FXML
-    private void verEnvio(ActionEvent event) {
+    private void verCarnets(ActionEvent event){
         Parada parada = (Parada) paradaCB.getSelectionModel().getSelectedItem();
-        envioServiceImpl.verEnvios(enviosTA, parada);
+        ConnectExistDB connectExistDB = new ConnectExistDB();
+        connectExistDB.carnets(parada, carnetsLV);
     }
 
     @Override
@@ -77,61 +74,5 @@ public class VerEnviosController implements Initializable {
                 paradaCB.getItems().add(p);
             }
         }
-    }
-
-    public StageManager getStageManager() {
-        return stageManager;
-    }
-
-    public void setStageManager(StageManager stageManager) {
-        this.stageManager = stageManager;
-    }
-
-    public ParadaServiceImpl getParadaServiceImpl() {
-        return paradaServiceImpl;
-    }
-
-    public void setParadaServiceImpl(ParadaServiceImpl paradaServiceImpl) {
-        this.paradaServiceImpl = paradaServiceImpl;
-    }
-
-    public Label getParadaLBL() {
-        return paradaLBL;
-    }
-
-    public void setParadaLBL(Label paradaLBL) {
-        this.paradaLBL = paradaLBL;
-    }
-
-    public ComboBox getParadaCB() {
-        return paradaCB;
-    }
-
-    public void setParadaCB(ComboBox paradaCB) {
-        this.paradaCB = paradaCB;
-    }
-
-    public Label getEnvioLBL() {
-        return envioLBL;
-    }
-
-    public void setEnvioLBL(Label envioLBL) {
-        this.envioLBL = envioLBL;
-    }
-
-    public Button getBuscarBTN() {
-        return buscarBTN;
-    }
-
-    public void setBuscarBTN(Button buscarBTN) {
-        this.buscarBTN = buscarBTN;
-    }
-
-    public Button getInicioBTN() {
-        return inicioBTN;
-    }
-
-    public void setInicioBTN(Button inicioBTN) {
-        this.inicioBTN = inicioBTN;
     }
 }

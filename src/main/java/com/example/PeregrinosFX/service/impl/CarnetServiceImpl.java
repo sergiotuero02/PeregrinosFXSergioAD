@@ -1,13 +1,12 @@
 package com.example.PeregrinosFX.service.impl;
 
-import com.example.PeregrinosFX.bean.Carnet;
-import com.example.PeregrinosFX.bean.Estancia;
-import com.example.PeregrinosFX.bean.Peregrino;
-import com.example.PeregrinosFX.bean.User;
+import com.example.PeregrinosFX.bean.*;
 import com.example.PeregrinosFX.repository.CarnetRepository;
+import com.example.PeregrinosFX.repository.RepositorioMongo;
 import com.example.PeregrinosFX.repository.UserRespository;
 import com.example.PeregrinosFX.service.CarnetService;
 import com.example.PeregrinosFX.service.UserService;
+import javafx.scene.control.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.DOMImplementation;
@@ -24,6 +23,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,9 +32,13 @@ public class CarnetServiceImpl implements CarnetService {
     @Autowired
     private CarnetRepository carnetRespository;
 
-    public void exportarCarnet(Peregrino p){
+    @Autowired
+    private RepositorioMongo mongoRepository;
+
+    public static File exportarCarnet(Peregrino p){
         String path = p.getIdPeregrino() + "_" + p.getNombre() + "peregrino.xml";
         Carnet c = p.getCarnet();
+        File f = null;
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder dbuilder = dbf.newDocumentBuilder();
@@ -137,12 +141,11 @@ public class CarnetServiceImpl implements CarnetService {
             }
 
             Source fuente = new DOMSource(doc);
-            File f = new File(path);
+            f = new File(path);
             StreamResult resultado = new StreamResult(f);
             TransformerFactory fabricaTransformador = TransformerFactory.newInstance();
             Transformer transformador = fabricaTransformador.newTransformer();
             transformador.transform(fuente, resultado);
-
         } catch (ParserConfigurationException e) {
             System.out.println("Se ha producido una ParseConfigurationException: " + e.getMessage());
         } catch (TransformerConfigurationException e) {
@@ -150,7 +153,21 @@ public class CarnetServiceImpl implements CarnetService {
         } catch (TransformerException e) {
             System.out.println("Se ha producido una TransformerException: " + e.getMessage());
         }
+        return f;
     }
+
+    public void backup(){
+        ArrayList<Carnet> carnets = new ArrayList<Carnet>();
+        carnets = (ArrayList<Carnet>) findAll();
+        String fileName = "backupcarnets " + LocalDate.now();
+        CarnetBackup carnetBackup = new CarnetBackup(fileName, carnets);
+        mongoRepository.save(carnetBackup);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("ÉXITO!");
+        alert.setContentText("Copia de seguridad guardada exitosamente");
+        alert.show();
+    }
+
     @Override
     public Carnet save(Carnet entity) {
         return null;

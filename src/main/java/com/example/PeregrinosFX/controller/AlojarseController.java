@@ -429,6 +429,18 @@ public class AlojarseController implements Initializable {
         }
         if (rol == 2) {
             paradaCB.setValue(u.getParada());
+            Servicio servicio = new Servicio();
+            ObjectSet<Servicio> servicios = db.queryByExample(servicio);
+            Parada parada = (Parada) paradaCB.getSelectionModel().getSelectedItem();
+            for (Servicio s : servicios) {
+                for (Long id : s.getIdParadas()) {
+                    if (id.equals(parada.getIdParada())) {
+                        serviciosCB.getItems().add(s);
+                        break;
+                    }
+                }
+
+            }
         } else {
             ArrayList<Parada> paradas = new ArrayList<>();
             paradas = (ArrayList<Parada>) paradaService.findAll();

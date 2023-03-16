@@ -34,6 +34,9 @@ public class MenuAdminParadaController implements Initializable {
     private Button serviciosBTN;
 
     @FXML
+    private Button carnetsBTN;
+
+    @FXML
     private Button cerrarsesionBTN;
 
     @FXML
@@ -61,6 +64,10 @@ public class MenuAdminParadaController implements Initializable {
         stageManager.switchScene(FxmlView.VERENVIO);
     }
 
+    @FXML
+    private void verCarnets(ActionEvent event) throws IOException {
+        stageManager.switchScene(FxmlView.VERCARNETS);
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

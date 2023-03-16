@@ -81,6 +81,9 @@ public class UserServiceImpl implements UserService {
         carnetService.addCarnet(carnet);
         peregrinoService.addPeregrino(peregrino);
         userService.addUser(user);
+        ConnectExistDB connectExistDB = new ConnectExistDB();
+        connectExistDB.almacenarCarnet(CarnetServiceImpl.exportarCarnet(peregrino), paradaCB);
+
 
         return user;
     }

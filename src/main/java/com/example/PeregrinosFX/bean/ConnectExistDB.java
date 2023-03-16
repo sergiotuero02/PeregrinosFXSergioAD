@@ -1,6 +1,7 @@
 package com.example.PeregrinosFX.bean;
 
-import org.w3c.dom.Document;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ListView;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Database;
@@ -9,48 +10,41 @@ import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class ConnectExistDB {
-    String URI = "xmldb:exist://localhost:8080/exist/xmlrpc";
-    String driver = "org.exist.xmldb.DatabaseImpl";
-    Collection col = null;
-    XMLResource res = null;
-
-    private void verDatosCol(Parada parada) {
-        String resources[] = new String[0];
+    private String URI = "xmldb:exist://localhost:8080/exist/xmlrpc/db/carnets";
+    private String driver = "org.exist.xmldb.DatabaseImpl";
+    private Collection colleccion = null;
+    private XMLResource carnetxml = null;
+    public void almacenarCarnet(File file, Parada parada) {
         try {
-            resources = col.listResources();
-        } catch (XMLDBException e) {
-            e.printStackTrace();
-        }
-        for (int i = 0; i < resources.length; i++) {
-            System.out.println(resources[i]);
-        }
-    }
-
-    public void guardar(File file, Parada parada, Document document) {
-        try {
-            Class cl = Class.forName(driver);
-            Database database = (Database) cl.newInstance();
+            //Iniciar driver
+            Class clase = Class.forName(driver);
+            Database database = (Database) clase.newInstance();
             database.setProperty("create-database", "true");
             DatabaseManager.registerDatabase(database);
-            col = DatabaseManager.getCollection(URI + "/db", "admin", "");
-            String nombreColeccionPrincipal = "/db/carnets";
-            String nombreSubColeccion = parada.getNombre();
-            Collection colPrincipal = col.getChildCollection(nombreColeccionPrincipal);
-            Collection subCol = colPrincipal.getChildCollection(nombreSubColeccion);
-            if (subCol != null) {
-                res = (XMLResource) col.createResource(file.getName(), "XMLResource");
-                res.setContent(document);
-                col.storeResource(res);
-            } else {
-                CollectionManagementService mgtService = (CollectionManagementService)
-                        col.getService("CollectionManagementService", "1.0");
+
+            colleccion = DatabaseManager.getCollection(URI, "admin", "");
+
+            String paradacolection = parada.getNombre(); // Nombre de la subcolección
+
+            Collection subColeccion = colleccion.getChildCollection(paradacolection);
+
+            while (subColeccion == null) {
+                CollectionManagementService management = (CollectionManagementService)
+                        colleccion.getService("CollectionManagementService", "1.0");
                 try {
-                    mgtService.createCollection(parada.getNombre().toLowerCase());
+                    management.createCollection("" + parada.getNombre());
                 } catch (XMLDBException e) {
                     e.printStackTrace();
                 }
+                subColeccion = colleccion.getChildCollection(paradacolection);
+            }
+            if (subColeccion != null) {
+                carnetxml = (XMLResource) subColeccion.createResource(file.getName(), "XMLResource");
+                carnetxml.setContent(file);
+                subColeccion.storeResource(carnetxml);
             }
         } catch (XMLDBException e) {
             throw new RuntimeException(e);
@@ -61,16 +55,63 @@ public class ConnectExistDB {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-        if (col != null) {
+
+        if (colleccion != null) {
             try {
-                col.close();
+                colleccion.close();
+                /// Apagar el servidor ExistDB
                 //DatabaseInstanceManager manager = (DatabaseInstanceManager) col.getService("DatabaseInstanceManager", "1.0");
                 //manager.shutdown();
             } catch (XMLDBException xe) {
                 xe.printStackTrace();
             }
         }
-    }}
+    }
+    public void carnets(Parada parada, ListView carnetsLV) {
+        try{
+        ArrayList<String> carnets = new ArrayList<String>();
+        carnetsLV.getItems().clear();
+        try {
+            //Iniciar driver
+            Class cl = Class.forName(driver);
+            Database database = (Database) cl.newInstance();
+            database.setProperty("create-database", "true");
+            DatabaseManager.registerDatabase(database);
+
+            colleccion = DatabaseManager.getCollection(URI, "admin", "");
+            String nombreSubColeccion = parada.getNombre();
+            Collection subCol = colleccion.getChildCollection(nombreSubColeccion);
+            try {
+                String[] carnet;
+                carnet = subCol.listResources();
+                for(String c : carnet){
+                    carnets.add(c);
+                }
+            } catch (XMLDBException e) {
+                e.printStackTrace();
+            }
+
+            for (String c : carnets) {
+                carnetsLV.getItems().add(c);
+            }
+        } catch (XMLDBException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }catch (NullPointerException e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("ERROR");
+            alert.setHeaderText(null);
+            alert.setContentText("La parada seleccionada no tiene ningún carnet almacenado en la bd.");
+            alert.showAndWait();
+        }
+    }
+}
 
 
 

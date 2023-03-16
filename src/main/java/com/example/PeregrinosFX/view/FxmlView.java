@@ -168,6 +168,17 @@ public enum FxmlView {
             return "/fxml/VerEnvios.fxml";
         }
     },
+    VERCARNETS {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("vercarnet.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/VerCarnets.fxml";
+        }
+    },
     ALOJARSE {
         @Override
         public String getTitle() {

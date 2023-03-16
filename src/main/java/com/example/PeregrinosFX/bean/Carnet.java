@@ -2,9 +2,11 @@ package com.example.PeregrinosFX.bean;
 
 
 import jakarta.persistence.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
 import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "carnets")
