@@ -1,7 +1,7 @@
 package com.example.PeregrinosFX.service.impl;
 
+import com.example.PeregrinosFX.Connections.ConnectExistDB;
 import com.example.PeregrinosFX.bean.*;
-import com.example.PeregrinosFX.controller.RegistroController;
 import com.example.PeregrinosFX.repository.UserRespository;
 import com.example.PeregrinosFX.service.CarnetService;
 import com.example.PeregrinosFX.service.ParadaService;

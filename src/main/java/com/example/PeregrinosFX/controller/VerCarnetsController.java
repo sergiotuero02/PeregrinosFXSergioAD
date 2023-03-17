@@ -1,6 +1,6 @@
 package com.example.PeregrinosFX.controller;
 
-import com.example.PeregrinosFX.bean.ConnectExistDB;
+import com.example.PeregrinosFX.Connections.ConnectExistDB;
 import com.example.PeregrinosFX.bean.Parada;
 import com.example.PeregrinosFX.config.StageManager;
 import com.example.PeregrinosFX.service.impl.ParadaServiceImpl;
